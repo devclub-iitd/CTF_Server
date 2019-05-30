@@ -1,0 +1,31 @@
+Screen															Return Description                             Input
+
+HOME:																										
+GET Live Competitions 							(Return all live competition IDs and stats)
+GET overall leaderbard 							(Return global leaderboard as list of User IDs) 		   (index start, index end)
+		   
+Practice:		   
+POST register_question							(register question)										   (Enter question details)
+POST update_question							(Update question)										   (Edit question details)
+GET practice leaderbard 						(Return practice leaderboard)							   (start, end index)
+GET user_stats 									(Return general user stats on competitions)				   (user token)
+GET problems 									(Return problem list and stats)							   (start,end index, sort by latest)
+GET categories 									(give all categories of problems with IDs)				   
+GET category_problem 							(Return list of problem stats of that category)			   (category, start, end index)
+GET problem 									(Full problem description)								   (problem id)
+POST :problem_id/flag 							(Yes/NO)												   (user_token, flag, prob id)
+
+Profile:
+POST update_profile
+GET user_stat 									(competitions participated and general user stat) 		   (user token)
+
+Competitions:
+POST register_event								(Event details)									           (Details filled)
+GET ongoing_events 								(return ongoing event stats)					           
+GET upcoming_event								(return upcoming event stats)                                
+GET past_events 								(return past event stats)						           (start, end Index of events)
+GET competition_leaderboard 					(latest leaderboard of that competition)		           (Event ID)
+GET competition_stat 							(Description and status of the competition)		           (Event ID)
+GET competition problems						(Return list of problem and stats of thei event)           (Event ID)
+GET problem_comp 								(Detailed problem description) 					           (user_token, prob_id)
+POST :problem_id/flag 							(YES/NO)										           (user_token, flag, prob id)

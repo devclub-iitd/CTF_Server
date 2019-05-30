@@ -1,0 +1,44 @@
+User - 
+	username			string						Primary Key
+	password			string
+	Name				string
+	Sex					enum {Male, Female, Other}
+	Institution			string
+	profilePic			string						local directory address
+	Rating				int		
+	isAdmin				int			
+	events				list of Int 				List of event Ids a user has participated into
+	problems			list of int 				List of Problem Ids a user has participated into
+	participant 		list of Int 				List of Participant Ids for a user
+
+Participant - 
+	participant_id 		string						Primary Key
+	event_id 			string						Event of this participant
+	user_id 			string						User corresponding to this participant
+	Score 				Int 						
+	Rating				Int
+	Rank 				Int
+	Problems_solved		list of Json 				List of Json with Problem IDs, score and number of attempts for that problem stored
+
+Event - 
+	event_id 			string						Primary Key
+	Difficulty 			enum {easy, medium, hard}	
+	Start_Time			string						Let's keep it fixed that Registration time closes 20 mins before the competition starts
+	End_Time			string
+	Title				string
+	Organiser			string
+	is_ongoing 			boolean
+	problems 			list of int 				List of Problem Ids in this event
+	scoring_mech 		enum {static, dynamic}		dynamic gives scores based on time and static takes score of problem directly
+	participants 		list of int 				List of participant IDs
+	leaderboard 		list of user_Ids			Once competition is over, we can store leaderboard here for quicker access. Else it 													will be calculated every 5 mins from participant table
+
+Problem - 
+	problem_id			string						Primary Key
+	Difficulty			Int
+	Author				string
+	Content				string
+	Answer				string
+	Points				Dictionary					Key: Event_ID, value: Highest static Score
+	Category			enum {Find categories}
+	is_active			Int 						Has 3 possible values. 1 for Practice, 2 for Competition and 0 for do not display
