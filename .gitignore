@@ -61,3 +61,7 @@ typings/
 .next
 .gitsecret/keys/random_seed
 !*.secret
+
+
+# Custom
+dist

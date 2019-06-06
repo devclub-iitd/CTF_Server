@@ -1,9 +1,12 @@
 User - 
 	username			string						Primary Key
 	password			string
-	Name				string
+	name				string
+	email
+	entryNumber
+	hostel
 	Sex					enum {Male, Female, Other}
-	Institution			string
+	institution			string
 	profilePic			string						local directory address
 	Rating				int		
 	isAdmin				int			
@@ -16,7 +19,6 @@ Participant -
 	event_id 			string						Event of this participant
 	user_id 			string						User corresponding to this participant
 	Score 				Int 						
-	Rating				Int
 	Rank 				Int
 	Problems_solved		list of Json 				List of Json with Problem IDs, score and number of attempts for that problem stored
 
