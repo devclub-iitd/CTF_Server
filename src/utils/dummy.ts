@@ -2,11 +2,13 @@ import problem, { default as Problem } from "../models/problem";
 import { default as User } from "../models/user";
 import { default as Participant } from "../models/participant";
 import { default as Event } from "../models/event";
-import { Document } from "mongoose";
+import { Document, mongo } from "mongoose";
+import mongoose from "mongoose";
 
 const users = [
     {
-        username: "Atishya",
+        _id: mongoose.Types.ObjectId(),
+        username: "Atishya_NEW",
         password: "1234",
         name: "Atishya Jain",
         email: "atishyajain1212@gmail.com",
@@ -15,11 +17,12 @@ const users = [
         institution: "IIT DELHI",
         rating: 5,
         isAdmin: 0,
-        events: [0],
-        problems: [0, 1],
-        participant: [0, 1]
+        events: [],
+        problems: [],
+        participant: []
     },
     {
+        _id: mongoose.Types.ObjectId(),
         username: "Ananye",
         password: "1234",
         name: "Ananye Agarwal",
@@ -29,11 +32,12 @@ const users = [
         institution: "IIT DELHI",
         rating: 5,
         isAdmin: 0,
-        events: [0],
-        problems: [0, 1],
-        participant: [0, 1]
+        events: [],
+        problems: [],
+        participant: []
     },
     {
+        _id: mongoose.Types.ObjectId(),
         username: "random",
         password: "1234",
         name: "random Agarwal",
@@ -43,77 +47,87 @@ const users = [
         institution: "IIT DELHI",
         rating: 15,
         isAdmin: 0,
-        events: [0],
-        problems: [0, 1],
-        participant: [0, 1]
+        events: [],
+        problems: [],
+        participant: []
     },
-];
-
-const participants = [
-    {
-        eventId: 0,
-        userId: 1,
-        score: 55,
-        rank: 1,
-        problemsSolved: [{problem: 0, score: 5}, {problem: 1, score: 15}]
-    },
-    {
-        eventId: 1,
-        userId: 0,
-        score: 155,
-        rank: 2,
-        problemsSolved: [{problem: 0, score: 35}, {problem: 1, score: 25}]
-    }
 ];
 
 const events = [
     {
+        _id: mongoose.Types.ObjectId(),
         title: "Introduction",
         organiser: "devclub",
         difficulty: "easy",
         startTime: new Date(),
         endTime: new Date(),
         isOngoing: true,
-        problems: [0, 1],
+        problems: [],
         scoringMech: "static",
-        participants: [0, 1],
-        leaderboard: [0, 1]
+        participants: [],
+        leaderboard: []
     }
 ];
 
+const participants = [
+    {
+        _id: mongoose.Types.ObjectId(),
+        eventId: events[0]._id,
+        userId: users[0]._id,
+        score: 55,
+        rank: 1,
+        problemsSolved: []
+    },
+    {
+        _id: mongoose.Types.ObjectId(),
+        eventId: events[0]._id,
+        userId: users[0]._id,
+        score: 155,
+        rank: 2,
+        problemsSolved: []
+    }
+];
+
+
+
 const problems = [
     {
+        _id: mongoose.Types.ObjectId(),
         difficulty: "medium",
         author: "atishya",
         content: "Do something",
         answer: "123456",
         points: {"0": 0, "1": 12},
-        category: ["Web Exploits"],
+        category: "Web Exploits",
         isActive: 0
     },
     {
+        _id: mongoose.Types.ObjectId(),
         difficulty: "easy",
         author: "ananye",
         content: "Do something",
         answer: "12356",
         points: {"0": 10, "1": 10},
-        category: ["Web Exploits"],
+        category: "Web Exploits",
         isActive: 1
     },
     {
+        _id: mongoose.Types.ObjectId(),
         difficulty: "medium",
         author: "atishya",
         content: "Do something again",
         answer: "1234",
         points: {"0": 20, "1": 122},
-        category: ["Web Exploits"],
+        category: "Web Exploits",
         isActive: 2
     }
 ];
 
 export const createDummyData = () => {
+    console.log("Creating dummy data...");
     return User.create(users)
     .then((createdUsers) => {
+        console.log("Created users ", createdUsers);
         return Participant.create(participants)
         .then((createdParticipants) => {
             return [createdParticipants, createdUsers];
