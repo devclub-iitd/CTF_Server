@@ -9,6 +9,6 @@ const [create, get, update, all] = initCRUD(User);
 router.get("/", all);
 router.get("/:id", get);
 router.put("/:id", update);
-router.post("/create", create);
+router.post("/", create);
 
 export default router;

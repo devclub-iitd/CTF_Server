@@ -3,9 +3,9 @@ export const createResponse = (message: string, data: any) => ({
     "data": data
 });
 
-export const createError = (status: number ,name: string, message: string) => {
-    let e = new Error();
-    e.status = status;
+export const createError = (status: number, name: string, message: string) => {
+    const e = new Error();
+    (<any>e).status = status;
     e.name = name;
     e.message = message;
     return e;

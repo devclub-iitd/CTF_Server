@@ -1,7 +1,11 @@
 import mongoose from "mongoose";
-import { isEmail } from 'validator';
+import { isEmail } from "validator";
 
 const userSchema = new mongoose.Schema({
+    _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true
+    },
     username: {
         type: String,
         unique: true,
@@ -21,7 +25,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         unique: true,
         required: true,
-        validate: [ isEmail, 'invalid email' ],
+        validate: [ isEmail, "invalid email" ],
         trim: true
     },
     entryNumber: {
@@ -31,7 +35,7 @@ const userSchema = new mongoose.Schema({
         maxlength: 11,
         trim: true,
         index: true,
-        default: 'XXXXXXXXXXX'
+        default: "XXXXXXXXXXX"
     },
     hostel: {
         type: String,
@@ -39,11 +43,11 @@ const userSchema = new mongoose.Schema({
         minlength: 4,
         maxlength: 15,
         trim: true,
-        default: 'XXXX'
+        default: "XXXX"
     },
     gender: {
         type: String,
-        enum:  ["male","female","Other"],
+        enum:  ["male", "female", "Other"],
         default: "female"
     },
     institution: {
@@ -67,21 +71,21 @@ const userSchema = new mongoose.Schema({
     events: {
         type: [{
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Event'
+            ref: "Event"
         }],
         default: []
     },
     problems: {
         type: [{
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Problem'
-        }],        
-        default: []        
+            ref: "Problem"
+        }],
+        default: []
     },
-    participant:{
+    participant: {
         type: [{
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Participant'
+            ref: "Participant"
         }],
         default: []
     }

@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 
 const problemSchema = new mongoose.Schema({
+    _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true
+    },
     difficulty: {
         type: String,
         required: true,
