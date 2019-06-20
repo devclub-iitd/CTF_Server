@@ -1,5 +1,5 @@
-import { default as Event } from "../models/event";
 import express from "express";
+import Event from "../models/event";
 import initCRUD from "../utils/crudFactory";
 
 const router = express.Router({mergeParams: true});

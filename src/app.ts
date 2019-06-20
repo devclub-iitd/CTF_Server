@@ -1,4 +1,4 @@
-import express, { response } from "express";
+import express, { Request, Response } from "express";
 import compression from "compression";  // compresses requests
 import bodyParser from "body-parser";
 import lusca from "lusca";
@@ -6,15 +6,15 @@ import cors from "cors";
 import path from "path";
 import mongoose from "mongoose";
 import bluebird from "bluebird";
+import responseTime from "response-time";
 import { MONGODB_URI } from "./utils/secrets";
-import { createDummyData } from "./utils/dummy";
+import createDummyData from "./utils/dummy";
 import logRequest from "./middlewares/logRequest";
 import userRouter from "./controllers/user";
 import participantRouter from "./controllers/participant";
 import eventRouter from "./controllers/event";
 import problemRouter from "./controllers/problem";
-import responseTime from "response-time";
-import { Request, Response, NextFunction } from "express";
+
 
 
 // Create Express server
@@ -54,10 +54,10 @@ apiRouter.use("/problem", problemRouter);
 
 // test route to make sure everything is working
 apiRouter.get("/", function(_, res) {
-    console.log("apiRouter get at route /");
-    res.json({
-      "data": undefined,
-      "message": "welcome to CTF API!"
+  console.log("apiRouter get at route /");
+  res.json({
+    "data": undefined,
+    "message": "welcome to CTF API!"
   });
 });
 
@@ -65,14 +65,14 @@ apiRouter.get("/", function(_, res) {
 apiRouter.get("/dummy", function(_, res) {
   console.log("Dummy router here");
   createDummyData()
-  .then((_) => {
-    return res.json({message: "All created!"});
-  });
+    .then(() => {
+      return res.json({message: "All created!"});
+    });
 });
 
 app.use("/api", apiRouter);
 
-app.use(function(err: Error, req: Request, res: Response, next: NextFunction) {
+app.use(function(err: Error, req: Request, res: Response) {
   console.log("Final resort error function");
   res.status(500);
   const e = new Error();

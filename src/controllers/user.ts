@@ -1,5 +1,5 @@
-import { default as User } from "../models/user";
 import express from "express";
+import User from "../models/user";
 import initCRUD from "../utils/crudFactory";
 
 const router = express.Router({mergeParams: true});

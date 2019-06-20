@@ -1,5 +1,5 @@
-import { default as Problem } from "../models/problem";
 import express from "express";
+import Problem from "../models/problem";
 import initCRUD from "../utils/crudFactory";
 
 const router = express.Router({mergeParams: true});
