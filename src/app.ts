@@ -15,8 +15,6 @@ import participantRouter from "./controllers/participant";
 import eventRouter from "./controllers/event";
 import problemRouter from "./controllers/problem";
 
-
-
 // Create Express server
 const app = express();
 

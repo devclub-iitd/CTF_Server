@@ -4,7 +4,7 @@ import { createResponse, createError } from "./helper";
 
 const initCRUD = (model: mongoose.Model<mongoose.Document, {}>) => {
   const name = model.collection.collectionName;
-
+  console.log(model.collection);
   /**
      * POST /
      * Create a document
@@ -61,7 +61,7 @@ const initCRUD = (model: mongoose.Model<mongoose.Document, {}>) => {
   /**
      * GET /
      * Gets all documents
-     */
+  */
   const all = (req: Request, res: Response, next: NextFunction) => {
     return model.find({})
       .then((docs) => {
@@ -77,7 +77,22 @@ const initCRUD = (model: mongoose.Model<mongoose.Document, {}>) => {
       });
   };
 
-  return [create, get, update, all];
+  const get_filter = (req: Request, res: Response, next: NextFunction) => {
+    return model.find(req.body.query)
+      .then((docs) => {
+        // if (!docs) {
+        //   next(createError(404, "Not found", `No data found with matching queries ${req.body.query}`));
+        //   return docs; 
+        // }
+        res.json(createResponse("Data found with details: ", docs));
+        return docs;
+      })
+      .catch((err) => {
+        next(err);
+      });
+  };
+
+  return [create, get, update, all, get_filter];
 };
 
 export default initCRUD;
