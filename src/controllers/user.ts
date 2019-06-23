@@ -3,9 +3,9 @@ import User from "../models/user";
 import initCRUD from "../utils/crudFactory";
 
 const router = express.Router({mergeParams: true});
-const [create, get, update, all] = initCRUD(User);
+const [create, get, update, all, get_filter] = initCRUD(User);
 
-// router.post('/',create);
+router.get('/filter', get_filter);
 router.get("/", all);
 router.get("/:id", get);
 router.put("/:id", update);
