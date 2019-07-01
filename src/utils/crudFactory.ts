@@ -76,23 +76,8 @@ const initCRUD = (model: mongoose.Model<mongoose.Document, {}>) => {
         next(err);
       });
   };
-
-  const get_filter = (req: Request, res: Response, next: NextFunction) => {
-    return model.find(req.body.query)
-      .then((docs) => {
-        // if (!docs) {
-        //   next(createError(404, "Not found", `No data found with matching queries ${req.body.query}`));
-        //   return docs; 
-        // }
-        res.json(createResponse("Data found with details: ", docs));
-        return docs;
-      })
-      .catch((err) => {
-        next(err);
-      });
-  };
-
-  return [create, get, update, all, get_filter];
+  
+  return [create, get, update, all];
 };
 
 export default initCRUD;
