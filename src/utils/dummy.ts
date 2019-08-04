@@ -55,16 +55,17 @@ const users = [
 const events = [
   {
     _id: mongoose.Types.ObjectId(),
-    title: "Introduction",
+    name: "Introduction",
     organiser: "devclub",
     difficulty: "easy",
     startTime: new Date(),
     endTime: new Date(),
     isOngoing: true,
-    problems: [],
+    challenges: [],
     scoringMech: "static",
     participants: [],
-    leaderboard: []
+    leaderboard: [],
+    details: "The first event ever!"
   }
 ];
 
@@ -94,31 +95,37 @@ const problems = [
     _id: mongoose.Types.ObjectId(),
     difficulty: "medium",
     author: "atishya",
-    content: "Do something",
+    details: "Do something",
     answer: "123456",
-    points: {"0": 0, "1": 12},
+    score: 12,
     category: "Web Exploits",
-    isActive: 0
+    isActive: 0,
+    name: "First problem",
+    userSolved: 0
   },
   {
     _id: mongoose.Types.ObjectId(),
     difficulty: "easy",
     author: "ananye",
-    content: "Do something",
+    details: "Do something",
     answer: "12356",
-    points: {"0": 10, "1": 10},
+    score: 10,
     category: "Web Exploits",
-    isActive: 1
+    isActive: 1,
+    name: "Second problem",
+    userSolved: 2
   },
   {
     _id: mongoose.Types.ObjectId(),
     difficulty: "medium",
     author: "atishya",
-    content: "Do something again",
+    details: "Do something again",
     answer: "1234",
-    points: {"0": 20, "1": 122},
+    score: 14,
     category: "Web Exploits",
-    isActive: 2
+    isActive: 2,
+    name: "Third problem",
+    userSolved: 3
   }
 ];
 

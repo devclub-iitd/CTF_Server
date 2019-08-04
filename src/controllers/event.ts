@@ -23,7 +23,7 @@ const get_ongoing_events = (req:Request, res:Response, next:NextFunction) => {
 
 router.post('/', create); 
 router.get('/ongoing-events', get_ongoing_events);
-router.get('/', validateToken, all); // Protected function 
+router.get('/', all); // Protected function 
 router.get('/:id',get);
 router.put('/:id',update);
 
