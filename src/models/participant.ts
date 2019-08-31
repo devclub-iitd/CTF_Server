@@ -1,10 +1,6 @@
 import mongoose from "mongoose";
 
 const participantSchema = new mongoose.Schema({
-  _id: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true
-  },
   eventId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,

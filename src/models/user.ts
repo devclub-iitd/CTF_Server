@@ -2,10 +2,6 @@ import mongoose from "mongoose";
 import { isEmail } from "validator";
 
 const userSchema = new mongoose.Schema({
-  _id: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true
-  },
   username: {
     type: String,
     unique: true,
