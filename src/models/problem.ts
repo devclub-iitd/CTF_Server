@@ -16,7 +16,7 @@ const problemSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  content: {
+  details: {
     type: String,
     required: true,
     trim: true
@@ -26,9 +26,8 @@ const problemSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  points: {
-    type: Map,
-    of: String,
+  score: {
+    type: Number,
     required: true,
   },
   category: {
@@ -38,6 +37,14 @@ const problemSchema = new mongoose.Schema({
   isActive: {
     type: Number,
     required: true
+  },
+  name: {
+    type:String,
+    required: true
+  },
+  userSolved: {
+    type: Number,
+    required: true 
   }
 }, { timestamps: true });
 

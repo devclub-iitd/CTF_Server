@@ -5,7 +5,7 @@ const eventSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true
   },
-  title: {
+  name: {
     type: String,
     required: true,
     trim: true
@@ -34,7 +34,7 @@ const eventSchema = new mongoose.Schema({
     required: true,
     default: false
   },
-  problems: {
+  challenges: {
     type: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: "Problem"
@@ -60,6 +60,10 @@ const eventSchema = new mongoose.Schema({
       ref: "Participant"
     }],
     default: []
+  },
+  details: {
+    type:String,
+    required: true
   }
 }, { timestamps: true });
 

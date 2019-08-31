@@ -1,21 +1,31 @@
 import express from "express";
 import Event from "../models/event";
+import mongoose, { model } from "mongoose";
 import initCRUD from "../utils/crudFactory";
-import { NextFunction } from "connect";
+import { Request, Response, NextFunction } from "express";
+import { createResponse, createError } from "../utils/helper";
+import { validateToken } from "../utils/tokenValidator";
 
 const router = express.Router({mergeParams: true});
-const [create, get, update, all, get_filter] = initCRUD(Event);
+const [create, get, update, all] = initCRUD(Event);
 
 const get_ongoing_events = (req:Request, res:Response, next:NextFunction) => {
-    req.body.query = {isOngoing: true};
-    return get_filter(req, res, next);
+    console.log("Ongoing events function entered");
+    return Event.find({isOngoing: true})
+        .then((docs) => {
+           res.json(createResponse('Ongoing events found with details ', docs));
+           return docs;
+        })
+        .catch((err) => {
+            next(err);
+        });
 }
 
-router.post('/',create);
-router.get('/ongoing_events', get_ongoing_events);
-router.get('/', all);
+router.post('/', create); 
+router.get('/ongoing-events', get_ongoing_events);
+router.get('/', all); // Protected function 
 router.get('/:id',get);
 router.put('/:id',update);
-router.get('/filter', get_filter);
+
 
 export default router;
