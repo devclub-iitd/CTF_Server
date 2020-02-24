@@ -13,6 +13,12 @@ const participantSchema = new mongoose.Schema({
     trim: true,
     ref: "User"
   },
+  username: {
+    type: String,
+    unique: true,
+    required: true,
+    trim: true
+  },
   score: {
     type: Number,
     required: true,

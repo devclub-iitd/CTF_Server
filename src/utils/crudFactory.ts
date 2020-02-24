@@ -76,8 +76,23 @@ const initCRUD = (model: mongoose.Model<mongoose.Document, {}>) => {
         next(err);
       });
   };
+
+  const remove = (req: Request, res: Response, next: NextFunction) => {
+    return model.findByIdAndDelete(req.params.id)
+      .then((doc) => {
+        if (!doc) {
+          next(createError(404, "Not found", `${name} does not exist with id ${req.params.id}`));
+          return doc;
+        }
+        res.json(createResponse(`${name} deleted with details:`, doc));
+        return doc;
+      })
+      .catch((err) => {
+        next(err);
+      });
+  };
   
-  return [create, get, update, all];
+  return [create, get, update, all, remove];
 };
 
 export default initCRUD;

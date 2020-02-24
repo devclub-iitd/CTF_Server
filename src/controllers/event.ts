@@ -8,7 +8,7 @@ import { validateToken } from "../utils/tokenValidator";
 import Participant from '../models/participant';
 
 const router = express.Router({mergeParams: true});
-const [create, get, update, all] = initCRUD(Event);
+const [create, get, update, all, remove] = initCRUD(Event);
 
 const get_ongoing_events = (req:Request, res:Response, next:NextFunction) => {
     console.log("Ongoing events function entered");
@@ -39,11 +39,23 @@ const get_event :RequestHandler = async (req, res, next) => {
 
 }
 
+const get_leaderboard: RequestHandler = async (req, res, next) => {
+    const leaderboard = await Participant.find({eventId: req.params.id})
+    try{
+        leaderboard.sort((a, b) => b.score - a.score)
+        res.json(leaderboard)
+    } catch( error ) {
+        res.status(500).json(error)
+    }
+}
+
 router.post('/', validateToken,create); 
 router.get('/ongoing-events', get_ongoing_events);
 router.get('/', all); // Protected function 
 router.get('/:id',get_event);
 router.put('/:id', validateToken, update);
+router.get('/leaderboard/:id', get_leaderboard);
+router.delete('/:id',remove)
 
 
 export default router;
