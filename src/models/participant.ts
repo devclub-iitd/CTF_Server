@@ -7,15 +7,20 @@ const participantSchema = new mongoose.Schema({
     trim: true,
     ref: "Event"
   },
+  eventName: {
+    type: String,
+    required: true,
+    trim: true,
+  },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
+    unique: false,
     trim: true,
     ref: "User"
   },
-  username: {
+  handle: {
     type: String,
-    unique: true,
     required: true,
     trim: true
   },
@@ -28,6 +33,16 @@ const participantSchema = new mongoose.Schema({
     type: Number,
     required: true,
     default: 0,
+  },
+  level: {
+    type: Number,
+    required: true,
+    default: 1,
+  },
+  levelScore: {
+    type: Map,
+    of: String,
+    default: []
   },
   problemsSolved: {
     type: [{

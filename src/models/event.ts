@@ -51,6 +51,16 @@ const eventSchema = new mongoose.Schema({
     }],
     default: []
   },
+  level: {
+    type: Number,
+    required: true,
+    default: 1
+  },
+  levelScore: {
+    type: String,
+    required: true,
+    default: ""
+  },
   leaderboard: {
     type: [{
       type: mongoose.Schema.Types.ObjectId,

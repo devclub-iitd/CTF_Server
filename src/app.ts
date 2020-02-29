@@ -72,11 +72,10 @@ app.use("/api", apiRouter);
 
 app.use(function(err: Error, req: Request, res: Response) {
   console.log("Final resort error function");
-  res.status(500);
   const e = new Error();
   e.message = err.message;
   e.name = err.name;
-  res.send(e);
+  res.status(500).send(e);
 });
 
 export default app;

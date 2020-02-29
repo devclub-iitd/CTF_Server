@@ -23,6 +23,11 @@ const problemSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
+  level: {
+    type: Number,
+    required: true,
+    default: 1
+  },
   score: {
     type: Number,
     required: true,

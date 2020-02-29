@@ -16,6 +16,7 @@ const initCRUD = (model: mongoose.Model<mongoose.Document, {}>) => {
         return createdDoc;
       })
       .catch((err) => {
+        res.json(err)
         next(err);
       });
   };

@@ -3,12 +3,13 @@ import Problem from "../models/problem";
 import initCRUD from "../utils/crudFactory";
 import User from '../models/user'
 import { validateToken } from '../utils/tokenValidator'
-import problem from '../models/problem';
+import Problem from '../models/problem';
+import { createResponse, createError } from '../utils/helper'
 
 const router = express.Router({mergeParams: true});
 const [create, get, update, all, ] = initCRUD(Problem);
 
-const updateProblem: RequestHandler = async (req, res, next) => {
+const updateProblem: RequestHandler = async (error, req, res, next) => {
     try{
         if(!req.user){
             throw Error()
@@ -27,11 +28,20 @@ const updateProblem: RequestHandler = async (req, res, next) => {
     }
 }
 
+const get_practice_problems: RequestHandler = async (req, res, next) => {
+    try{
+        const problems = await Problem.find({ isActive: req.params.id })
+        res.json(createResponse(`Problems found with details:`, problems));
+    } catch(error) {
+        res.status(500).json(error)
+    }
+}
+
 
 
 router.post('/', validateToken,create);
-router.get('/',all);
-router.get('/:id',get);
+router.get('/all_paroblems/:id', get_practice_problems);
+router.get('/particular_problem/:id',get);
 router.put('/:id', validateToken,updateProblem);
 
 export default router;

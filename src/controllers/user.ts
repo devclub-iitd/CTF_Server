@@ -4,6 +4,7 @@ import { Request, Response, NextFunction } from "express";
 import User from "../models/user";
 import initCRUD from "../utils/crudFactory";
 import { createResponse, createError } from "../utils/helper";
+import { validateToken } from '../utils/tokenValidator';
 
 const router = express.Router({mergeParams: true});
 const [create, get, update, all] = initCRUD(User);
@@ -78,13 +79,27 @@ const userSignUp : RequestHandler = async (req, res, next) => {
         res.json(result)
     }catch(error) {
         console.log(error)
-        res.status(400).send(error)
+        res.status(400).json(error)
     }    
+}
+
+const getUser : RequestHandler = async (req,res,next) => {
+    try{
+        const user = await User.findById(req.params.id)
+        if( !user ){
+            throw new Error()
+        }
+        await user.populate('participant').execPopulate()
+        res.json(createResponse(`User found with details:`, user));
+    } catch(error) {
+        res.status(500).json(error)
+    }
+    
 }
 
 router.get("/", all);
 router.post('/login', userLogin);
-router.get("/:id", get);
+router.get("/:id", validateToken, getUser);
 router.put("/:id", update);
 router.post("/signup", userSignUp);
 

@@ -4,6 +4,7 @@ import Problem from '../models/problem'
 import User from '../models/user'
 import initCRUD from "../utils/crudFactory";
 import { validateToken } from '../utils/tokenValidator'
+import { level } from 'winston';
 
 const router = express.Router({mergeParams: true});
 const [create, get, update, all, remove] = initCRUD(Participant);
@@ -54,12 +55,24 @@ const update_participant : RequestHandler = async (req, res, next) => {
             index = participantObj.problemsSolved.length
             participantObj.problemsSolved.push(problemMap)
         }
+        let level = participantObj.level
         let updatedScore = participantObj.score
         if(problemMap.get(req.body.problemId) === 'UnSolved'){
             if(req.body.answer === answer){
                 problemMap.set(req.body.problemId, 'Solved')
                 updatedScore = updatedScore + req.body.score
                 problemObj.usersSolved = problemObj.usersSolved + 1
+                if(!participantObj.levelScore.has(problemObj.level.toString())){
+                    participantObj.levelScore.set(problemObj.level.toString(),0)
+                }
+                const currScore =  participantObj.levelScore.get(problemObj.level.toString())
+                const currScoreVal = parseInt(currScore, 10);
+                const updatedcurrScoreVal = currScoreVal + req.body.score
+                participantObj.levelScore.set(problemObj.level.toString(),updatedcurrScoreVal)
+                const eventScore: Map<String, String> = new Map(JSON.parse(req.body.eventScore)) 
+                if(level === problemObj.level && updatedcurrScoreVal >= ((parseInt(eventScore.get(problemObj.level.toString()),10))/2)){
+                    level = level + 1
+                }
                 await Problem.findByIdAndUpdate(
                     problemObj._id,
                     {usersSolved: problemObj.usersSolved},
@@ -76,7 +89,7 @@ const update_participant : RequestHandler = async (req, res, next) => {
         const participant_id = participantObj._id
         const updatedParticipant = await Participant.findByIdAndUpdate(
             participant_id,
-            {problemsSolved: [...participantObj.problemsSolved], score: updatedScore},
+            {problemsSolved: [...participantObj.problemsSolved], score: updatedScore, levelScore: participantObj.levelScore, level},
             {new: true}
         )
         if(req.body.answer === answer){
