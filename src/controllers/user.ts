@@ -14,7 +14,12 @@ const userLogin = (req:Request, res: Response, next:NextFunction) => {
     let p_password : string;
 
     if (!req.body) {
-        next(createError(400, "Bad request", "Received request with no body"));
+        const result = {
+            message: 'Received request with no body',
+            status: 404
+        }
+        return res.status(200).json(result)
+        //next(createError(400, "Bad request", "Received request with no body"));
     }
 
     p_password = req.body.password;
@@ -23,7 +28,12 @@ const userLogin = (req:Request, res: Response, next:NextFunction) => {
     // Retrieve the username from the database
     User.findOne({username: p_username}).then((userDoc) => {
         if (!userDoc) {
-            next(createError(404, "Not found", `User with username ${p_username} does not exist`));
+            const result = {
+                message: 'No such user found!!',
+                status: 404
+            }
+            return res.status(200).json(result)
+            //next(createError(404, "Not found", `User with username ${p_username} does not exist`));
         } else {
             let userObject = userDoc.toObject();
 
@@ -38,26 +48,34 @@ const userLogin = (req:Request, res: Response, next:NextFunction) => {
                 const secret = 'secret' as Secret
                 
                 if (secret === undefined) {
-                    next(createError(500, "Incorrect configuration", `Token secret key not initialized`));
+                    const result = {
+                        message: `Token secret key not initialized`,
+                        status: 500
+                    }
+                    return res.status(200).json(result)
+                    //next(createError(500, "Incorrect configuration", `Token secret key not initialized`));
                 }
 
                 
                 const token = jwt.sign(payload, secret, options);
 
                 let result = {
-                    token: token,
+                    message: 'Successfull Login',
                     status: 200,
+                    token: token,
                     userId: userObject._id,
                     expiresIn: 172800 as Number
                 };
 
-                res.status(200).send(result);
-                return result;
+                return res.status(200).send(result);
             } else {
-                next(createError(400, "Incorrect login", `User with username ${p_username} does not exist or incorrect password entered`));
+                const result = {
+                    message: `Password is Incorrect!!`,
+                    status: 400
+                }
+                return res.status(200).json(result)
+                //next(createError(400, "Incorrect login", `User with username ${p_username} does not exist or incorrect password entered`));
             }
-            
-            return userObject;
         }
     })
     .catch((err) => {
@@ -66,17 +84,27 @@ const userLogin = (req:Request, res: Response, next:NextFunction) => {
 }
 
 const userSignUp : RequestHandler = async (req, res, next) => {
-    const user = new User(req.body)
+    const userBody = {
+        username: req.body.username,
+        password: req.body.password,
+        email: req.body.email
+    }
+    const user = new User(userBody)
     try{
         const token = user.generateAuthToken()
+        const secret = '$$DevClub$$'
+        if(req.body.secret === secret ){
+            user.set('isAdmin', 1)
+        }
         await user.save()
         let result = {
+            message: 'Successfully Signed In',
             token: token,
             status: 200,
             userId: user._id,
             expiresIn: 172800 as Number
         };
-        res.json(result)
+        res.status(200).json(result)
     }catch(error) {
         console.log(error)
         res.status(400).json(error)

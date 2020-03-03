@@ -12,10 +12,10 @@ const [create, get, update, all, remove] = initCRUD(Participant);
 const update_participant : RequestHandler = async (req, res, next) => {
     try{
         let message = "Incorrect"
-        const currentTime = new Date()
-        const startTime = req.body.startTime
-        const endTime = req.body.endTime
-        if(startTime < currentTime < endTime ){
+        const currentTime = new Date().getTime()
+        const startTime = new Date(req.body.startTime).getTime()
+        const endTime = new Date(req.body.endTime).getTime()
+        if(startTime > currentTime || endTime < currentTime ){
             if(startTime>currentTime){
                 message = "Competition has not started yet"
             }
@@ -49,6 +49,7 @@ const update_participant : RequestHandler = async (req, res, next) => {
             }
         }
         if(index === -1){
+            problemMap.set('Status', 'UnSolved')
             problemMap.set(req.body.problemId, 'UnSolved')
             problemMap.set('name', problem.get('name'))
             problemMap.set('Attempt', 0)
@@ -60,6 +61,8 @@ const update_participant : RequestHandler = async (req, res, next) => {
         if(problemMap.get(req.body.problemId) === 'UnSolved'){
             if(req.body.answer === answer){
                 problemMap.set(req.body.problemId, 'Solved')
+                problemMap.set('Time', new Date())
+                problemMap.set('Status', 'Solved')
                 updatedScore = updatedScore + req.body.score
                 problemObj.usersSolved = problemObj.usersSolved + 1
                 if(!participantObj.levelScore.has(problemObj.level.toString())){
@@ -107,7 +110,17 @@ const update_participant : RequestHandler = async (req, res, next) => {
     }
 }
 
-router.post('/', validateToken, create);
+const validateRegistration: RequestHandler = async (req, res, next) => {
+    const participant = await Participant.find({eventId: req.body.eventId, userId: req.body.userId})
+    if(participant.length === 0){
+        next()
+        return
+    }
+    res.json({message: 'Already Registered', data: null})
+
+}
+
+router.post('/', validateToken, validateRegistration, create);
 router.get('/',all);
 router.get('/:id',get);
 router.put('/:id', validateToken, update_participant);

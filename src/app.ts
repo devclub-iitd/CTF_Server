@@ -59,6 +59,14 @@ apiRouter.get("/", function(_, res) {
   });
 });
 
+//Test
+const publicDirectoryPath = path.join(__dirname, '../public')
+//const viewsPath = path.join(__dirname, '../public')
+
+app.use(express.static(publicDirectoryPath))
+
+//
+
 
 apiRouter.get("/dummy", function(_, res) {
   console.log("Dummy router here");

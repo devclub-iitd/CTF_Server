@@ -6,6 +6,11 @@ const eventSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
+  showLeaderboard: {
+    type: Boolean,
+    //required: true,
+    default: true
+  },
   organiser: {
     type: String,
     required: true,

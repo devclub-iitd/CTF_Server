@@ -9,9 +9,10 @@ import { createResponse, createError } from '../utils/helper'
 const router = express.Router({mergeParams: true});
 const [create, get, update, all, ] = initCRUD(Problem);
 
-const updateProblem: RequestHandler = async (error, req, res, next) => {
+const updateProblem: RequestHandler = async (req, res, next) => {
     try{
         if(!req.user){
+            console.log('User not Found!!')
             throw Error()
         }
         
@@ -24,7 +25,7 @@ const updateProblem: RequestHandler = async (error, req, res, next) => {
         res.json({res1, res2});
         return doc;
     }catch(error){
-        res.status(500).send()
+        res.status(500).json(error)
     }
 }
 
@@ -42,6 +43,6 @@ const get_practice_problems: RequestHandler = async (req, res, next) => {
 router.post('/', validateToken,create);
 router.get('/all_paroblems/:id', get_practice_problems);
 router.get('/particular_problem/:id',get);
-router.put('/:id', validateToken,updateProblem);
+router.put('/updated_problem/:id', validateToken,updateProblem);
 
 export default router;

@@ -61,5 +61,6 @@ const validateToken = (req: Request, res:Response, next:NextFunction) => {
     }
 }
 
+
 export {validateToken};
 
