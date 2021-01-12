@@ -35,7 +35,7 @@ const problemSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    enum: ["Web Exploits", "Binary Exploits", "Cipher-Decipher"]
+    enum: ["Binary Exploitation", "Reverse Engineering", "Web Exploitation","Cryptography","Forensics"]
   },
   isActive: {
     type: Number,
