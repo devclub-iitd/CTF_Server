@@ -3,7 +3,6 @@ import Problem from "../models/problem";
 import initCRUD from "../utils/crudFactory";
 import User from '../models/user'
 import { validateToken } from '../utils/tokenValidator'
-import Problem from '../models/problem';
 import { createResponse, createError } from '../utils/helper'
 
 const router = express.Router({mergeParams: true});
