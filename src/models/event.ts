@@ -6,10 +6,16 @@ const eventSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
+  showLeaderboard: {
+    type: Boolean,
+    //required: true,
+    default: true
+  },
   organiser: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
+    default: 'Anonymous'
   },
   difficulty: {
     type: String,
@@ -49,6 +55,16 @@ const eventSchema = new mongoose.Schema({
       ref: "Participant"
     }],
     default: []
+  },
+  level: {
+    type: Number,
+    required: true,
+    default: 1
+  },
+  levelScore: {
+    type: String,
+    required: true,
+    default: ""
   },
   leaderboard: {
     type: [{

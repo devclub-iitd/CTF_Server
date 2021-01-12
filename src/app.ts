@@ -59,6 +59,14 @@ apiRouter.get("/", function(_, res) {
   });
 });
 
+//Test
+const publicDirectoryPath = path.join(__dirname, '../public')
+//const viewsPath = path.join(__dirname, '../public')
+
+app.use(express.static(publicDirectoryPath))
+
+//
+
 
 apiRouter.get("/dummy", function(_, res) {
   console.log("Dummy router here");
@@ -72,11 +80,10 @@ app.use("/api", apiRouter);
 
 app.use(function(err: Error, req: Request, res: Response) {
   console.log("Final resort error function");
-  res.status(500);
   const e = new Error();
   e.message = err.message;
   e.name = err.name;
-  res.send(e);
+  res.status(500).send(e);
 });
 
 export default app;

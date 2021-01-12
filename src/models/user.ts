@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import jwt, { Secret } from "jsonwebtoken";
 import { isEmail } from "validator";
 
 const userSchema = new mongoose.Schema({
@@ -23,6 +24,10 @@ const userSchema = new mongoose.Schema({
     required: true,
     validate: [ isEmail, "invalid email" ],
     trim: true
+  },
+  number: {
+    type: String,
+    trim: true,
   },
   entryNumber: {
     type: String,
@@ -86,6 +91,21 @@ const userSchema = new mongoose.Schema({
     default: []
   }
 }, { timestamps: true });
+
+userSchema.methods.generateAuthToken = function() {
+  const user = this
+  try{
+    const payload = {user: user.username};
+    const options = {expiresIn: '2d', issuer: 'devclub-ctf'};
+    //const secret = process.env.JWT_SECRET as Secret;
+    const secret = 'secret' as Secret
+    const token = jwt.sign(payload, secret, options);
+    return token
+  }catch(error){
+      return console.log(error)
+  }
+}
+
 
 
 const User = mongoose.model("User", userSchema);

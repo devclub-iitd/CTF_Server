@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import jwt, { Secret } from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 import { createResponse, createError } from "./helper";
 import User from "../models/user";
@@ -6,19 +6,21 @@ import { create } from "domain";
 
 const validateToken = (req: Request, res:Response, next:NextFunction) => {
     const authorizationHeader = req.headers.authorization;
-    if (authorizationHeader) {
-        const token = authorizationHeader.split(' ')[1];
+    if (authorizationHeader) { 
+        const token = authorizationHeader.split(' ')[1];console.log(authorizationHeader)
         const options = {
             expiresIn: '2d',
             issuer: 'devclub-ctf'
         };
 
         try {
-            if (!process.env.JWT_SECRET) {
+            //const secret = process.env.JWT_SECRET
+            const secret = 'secret' as Secret
+            if (!secret) {
                 next(createError(500, "Internal error", `The JWT secret is not configured properly`));
                 return;
             } else {
-                jwt.verify(token, process.env.JWT_SECRET, options, (err, authorizedData) => {
+                jwt.verify(token, secret, options, (err, authorizedData) => {
                     if(err) {
                         console.log("jwt.verify error 1");
                         next(err);

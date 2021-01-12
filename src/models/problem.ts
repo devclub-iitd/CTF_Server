@@ -10,7 +10,8 @@ const problemSchema = new mongoose.Schema({
   author: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
+    default: 'Anonymous'
   },
   details: {
     type: String,
@@ -22,17 +23,24 @@ const problemSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
+  level: {
+    type: Number,
+    required: true,
+    default: 1
+  },
   score: {
     type: Number,
     required: true,
+    default: 0
   },
   category: {
     type: String,
-    enum: ["Web Exploits", "Binary Exploits", "Cipher-Decipher"]
+    enum: ["Binary Exploitation", "Reverse Engineering", "Web Exploitation","Cryptography","Forensics"]
   },
   isActive: {
     type: Number,
-    required: true
+    required: true, // 0 for do not display, 1 for practice, 2 for competition
+    default: 1
   },
   name: {
     type:String,
@@ -40,7 +48,8 @@ const problemSchema = new mongoose.Schema({
   },
   userSolved: {
     type: Number,
-    required: true 
+    required: true ,
+    default: 0
   }
 }, { timestamps: true });
 
