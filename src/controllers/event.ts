@@ -6,7 +6,6 @@ import { Request, Response, NextFunction } from "express";
 import { createResponse, createError } from "../utils/helper";
 import { validateToken } from "../utils/tokenValidator";
 import Participant from '../models/participant';
-import Event from '../models/event'
 import { level } from "winston";
 
 const router = express.Router({mergeParams: true});
