@@ -8,7 +8,7 @@ services:
     networks:
       - "internal"
     restart: "unless-stopped"
-  dashboard:
+  ctfserver:
     build: .
     image: "${REGISTRY_NAME}devclubiitd/ctfserver:0.1"
     ports:
