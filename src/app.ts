@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import express, { Request, Response } from "express";
 import compression from "compression";  // compresses requests
 import bodyParser from "body-parser";
@@ -6,6 +8,7 @@ import cors from "cors";
 import path from "path";
 import mongoose from "mongoose";
 import bluebird from "bluebird";
+import cookieParser from "cookie-parser";
 import responseTime from "response-time";
 import { MONGODB_URI } from "./utils/secrets";
 import createDummyData from "./utils/dummy";
@@ -14,7 +17,7 @@ import userRouter from "./controllers/user";
 import participantRouter from "./controllers/participant";
 import eventRouter from "./controllers/event";
 import problemRouter from "./controllers/problem";
-
+import auth from "./middlewares/auth";
 // Create Express server
 const app = express();
 
@@ -32,6 +35,7 @@ mongoose.connect(mongoUrl, {useNewUrlParser: true}).then(
 app.set("port", process.env.PORT || 3000);
 app.use(compression());
 app.use(responseTime());
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
@@ -45,6 +49,7 @@ app.use(
 app.use(logRequest);
 
 const apiRouter = express.Router();
+apiRouter.use(auth);
 apiRouter.use("/user", userRouter);
 apiRouter.use("/participant", participantRouter);
 apiRouter.use("/event", eventRouter);
@@ -78,12 +83,12 @@ apiRouter.get("/dummy", function(_, res) {
 
 app.use("/api", apiRouter);
 
-app.use(function(err: Error, req: Request, res: Response) {
-  console.log("Final resort error function");
-  const e = new Error();
-  e.message = err.message;
-  e.name = err.name;
-  res.status(500).send(e);
-});
+// app.use(function(err: Error, req: Request, res: Response) {
+//   console.log("Final resort error function");
+//   const e = new Error();
+//   e.message = err.message;
+//   e.name = err.name;
+//   res.status(500).send(e);
+// });
 
 export default app;
