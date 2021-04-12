@@ -1,3 +1,6 @@
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/no-var-requires */
 // middleware function to use to interact with auth server
 const express = require('express');
 
@@ -36,7 +39,24 @@ const ROLES = {
 }
 
 const defaultRoles = ['external_user'];
-const middlewareRouter = express.Router({mergeParams: true});
+
+const isAuthorized = (req,user) => {
+  if (publicPaths.find(pathRegex => {return new RegExp(pathRegex).test(req.url)}) !== undefined) return true;
+  const match = Object.keys(ROLES).find(pathRegex => { return new RegExp(pathRegex).test(req.url) })
+  if(match){
+    for (const index in ROLES[match]) {
+      if (!user.roles.includes(ROLES[match][index])) return false;
+    }
+    return true;
+  }
+    
+  for (const index in defaultRoles) {
+    if (!user.roles.includes(defaultRoles[index])) return false;
+  }
+  return true;
+}
+
+
 const auth = async (req, res, next) => {
   // Extract tokens from cookies
   console.log("AUTH middleware called!");
@@ -90,22 +110,5 @@ const auth = async (req, res, next) => {
   }
     
 };
-
-const isAuthorized = (req,user) => {
-  if (publicPaths.find(pathRegex => {return new RegExp(pathRegex).test(req.url)}) !== undefined) return true;
-  const match = Object.keys(ROLES).find(pathRegex => { return new RegExp(pathRegex).test(req.url) })
-  if(match){
-    for (const index in ROLES[match]) {
-      if (!user.roles.includes(ROLES[match][index])) return false;
-    }
-    return true;
-  }
-    
-  for (const index in defaultRoles) {
-    if (!user.roles.includes(defaultRoles[index])) return false;
-  }
-  return true;
-}
-// middlewareRouter.use(auth);
 
 export default auth;
